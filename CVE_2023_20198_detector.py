@@ -133,6 +133,9 @@ def main(host):
         print("-", host, "Vulnerable!")
     else:
         print("-", host, "Not vulnerable.")
+    
+    # Terminate ssh connection with host
+    connection.close_ssh_connection()
 
 
 if __name__ == '__main__':
