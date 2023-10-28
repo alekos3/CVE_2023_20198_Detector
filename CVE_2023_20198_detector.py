@@ -118,6 +118,7 @@ def main(host):
 
     if not status:
         print(f"- {host}: Failed to connect.")
+        RESULTS[host] = {"vulnerable": ["Connection Error."]}
         return
 
     for command in vuln_commands:
