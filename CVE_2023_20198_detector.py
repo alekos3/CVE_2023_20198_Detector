@@ -1,6 +1,6 @@
 __author__ = "Alexios Nersessian"
 __email__ = "nersessian@gmail.com"
-__version__ = "v1"
+__version__ = "v1.2"
 
 import argparse
 import getpass
@@ -50,7 +50,8 @@ class SshHandler:
             }
             ssh = netmiko.ConnectHandler(**device)
 
-        except:
+        except Exception as e:
+            print(e)
             return False
 
         self.ssh = ssh
@@ -79,7 +80,7 @@ class SshHandler:
         except Exception as e:
             if collect_output:
                 print(f"Could not get output for command - {command}")
-            # print(e)
+                print(e)
             return False
 
 
@@ -91,7 +92,7 @@ def get_devices_from_csv(filename):
     return data.splitlines()
 
 
-def write_to_csv(data, current_timestamp):
+def write_to_csv(data, curr_time):
     # Prepare data for csv
     csv_data = [['IP', 'Vulnerabilities Found']]
     for ip, info in data.items():
@@ -99,7 +100,7 @@ def write_to_csv(data, current_timestamp):
         csv_data.append([ip, vulnerabilities])
 
     # Write to csv
-    with open(f'Results_CVE_2023_20198_{current_timestamp}.csv', 'w', newline='') as file:
+    with open(f'Results_CVE_2023_20198_{curr_time}.csv', 'w', newline='') as file:
         writer = csv.writer(file)
         writer.writerows(csv_data)
 
@@ -134,7 +135,7 @@ def main(host):
         print("-", host, "Vulnerable!")
     else:
         print("-", host, "Not vulnerable.")
-    
+
     # Terminate ssh connection with host
     connection.close_ssh_connection()
 
